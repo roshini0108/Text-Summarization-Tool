@@ -142,8 +142,8 @@ function renderOutput(payload, data) {
         compareGrid.classList.remove("hidden");
         compressionInfo.classList.add("hidden");
 
-        transformerOutput.innerHTML = highlightImportantSentences(data.transformer, "transformer", payload.text);
-        nltkOutput.innerHTML = highlightImportantSentences(data.nltk, "nltk", payload.text);
+        transformerOutput.textContent = data.transformer;
+        nltkOutput.textContent = data.nltk;
         transformerTiming.textContent = `Time: ${formatTime(data.transformer_time)}`;
         nltkTiming.textContent = `Time: ${formatTime(data.nltk_time)}`;
         transformerCompression.textContent = getCompressionText(payload.text, data.transformer);
@@ -162,7 +162,7 @@ function renderOutput(payload, data) {
         singleSummaryTitle.textContent = "NLTK Summary";
     }
 
-    singleSummaryText.innerHTML = highlightImportantSentences(data.summary, payload.method, payload.text);
+    singleSummaryText.textContent = data.summary;
     singleTiming.textContent = `Time: ${formatTime(data.time)}`;
     compressionInfo.textContent = getCompressionText(payload.text, data.summary);
     latestSummaryText = data.summary;
@@ -273,56 +273,6 @@ function countWords(text) {
     }
 
     return text.trim().split(/\s+/).length;
-}
-
-function highlightImportantSentences(summary, method, originalText) {
-    const sentences = splitIntoSentences(summary);
-
-    if (sentences.length === 0) {
-        return escapeHtml(summary);
-    }
-
-    const highlightSet = new Set();
-
-    if (method === "nltk") {
-        sentences.forEach((sentence) => {
-            if (originalText.includes(sentence)) {
-                highlightSet.add(sentence);
-            }
-        });
-    } else {
-        const rankedSentence = sentences
-            .slice()
-            .sort((left, right) => right.length - left.length)[0];
-
-        if (rankedSentence) {
-            highlightSet.add(rankedSentence);
-        }
-    }
-
-    return sentences
-        .map((sentence) => {
-            const escapedSentence = escapeHtml(sentence.trim());
-            if (highlightSet.has(sentence)) {
-                return `<span class="highlight">${escapedSentence}</span>`;
-            }
-            return escapedSentence;
-        })
-        .join(" ");
-}
-
-function splitIntoSentences(text) {
-    const matches = text.match(/[^.!?]+[.!?]?/g);
-    return matches ? matches.map((sentence) => sentence.trim()).filter(Boolean) : [];
-}
-
-function escapeHtml(text) {
-    return text
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#39;");
 }
 
 function getMethodLabel(method) {

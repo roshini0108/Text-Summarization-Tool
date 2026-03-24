@@ -296,13 +296,6 @@ body {
     background: linear-gradient(180deg, rgba(222, 245, 229, 0.7), rgba(255, 255, 255, 0.94));
 }
 
-.highlight {
-    background: var(--accent-yellow);
-    border-radius: 10px;
-    padding: 2px 6px;
-    box-shadow: 0 0 0 4px var(--highlight-glow);
-}
-
 .hidden {
     display: none;
 }
