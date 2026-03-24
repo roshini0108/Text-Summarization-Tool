@@ -1,4 +1,9 @@
-nltk
+fastapi
+uvicorn
 transformers
 torch
 sentencepiece
+nltk
+PyPDF2
+python-docx
+python-multipart

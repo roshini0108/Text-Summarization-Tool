@@ -1,4 +1,33 @@
-venv/
-__pycache__/
+# Python
+
+**pycache**/
 *.pyc
-.env
+*.pyo
+*.pyd
+
+# Virtual Environment
+
+venv/
+.env/
+
+# OS files
+
+.DS_Store
+Thumbs.db
+
+# Logs
+
+*.log
+
+# VS Code
+
+.vscode/
+
+# Jupyter
+
+.ipynb_checkpoints/
+
+# Model cache (optional but recommended)
+
+.cache/
+~/.cache/
