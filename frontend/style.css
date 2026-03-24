@@ -1,17 +1,20 @@
 :root {
-    --page-bg: linear-gradient(135deg, #eef7ff 0%, #f5efff 50%, #eef9f1 100%);
+    --page-bg: linear-gradient(135deg, #eef7ff 0%, #f7ecff 45%, #eff9ee 100%);
     --card-bg: rgba(255, 255, 255, 0.86);
     --panel-bg: rgba(255, 255, 255, 0.92);
-    --border: rgba(124, 144, 185, 0.18);
-    --shadow: 0 22px 60px rgba(103, 124, 164, 0.14);
-    --text-primary: #26415e;
-    --text-secondary: #5a6f86;
+    --border: rgba(130, 138, 199, 0.18);
+    --shadow: 0 24px 60px rgba(111, 122, 176, 0.16);
+    --text-primary: #2c4466;
+    --text-secondary: #627691;
     --accent-blue: #dceefe;
-    --accent-lavender: #ece1ff;
-    --accent-green: #def5e5;
-    --button-bg: linear-gradient(135deg, #8cc8ff 0%, #b8a6ff 100%);
-    --button-text: #10324d;
+    --accent-lavender: #efe4ff;
+    --accent-green: #dff6e7;
+    --accent-pink: #ffe4f3;
+    --accent-yellow: #fff4bf;
+    --button-bg: linear-gradient(135deg, #8fcfff 0%, #c0acf9 100%);
+    --button-text: #173552;
     --input-bg: #fcfdff;
+    --highlight-glow: rgba(255, 231, 141, 0.45);
 }
 
 * {
@@ -35,11 +38,11 @@ body {
 }
 
 .app-card {
-    width: min(980px, 100%);
+    width: min(1020px, 100%);
     background: var(--card-bg);
     backdrop-filter: blur(12px);
     border: 1px solid var(--border);
-    border-radius: 28px;
+    border-radius: 30px;
     box-shadow: var(--shadow);
     padding: 32px;
 }
@@ -59,32 +62,45 @@ body {
 
 .hero h1 {
     margin: 0;
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(2rem, 4vw, 3.1rem);
     line-height: 1.1;
 }
 
 .subtitle {
     margin: 14px 0 0;
-    max-width: 680px;
+    max-width: 720px;
     color: var(--text-secondary);
     line-height: 1.65;
 }
 
 .panel,
-.output-block {
+.output-block,
+.compression-card,
+.loader-box {
     background: var(--panel-bg);
     border: 1px solid var(--border);
     border-radius: 22px;
     padding: 18px;
 }
 
-.section-label {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 0.95rem;
-    font-weight: 600;
+.upload-panel {
+    background: linear-gradient(180deg, rgba(255, 228, 243, 0.75), rgba(255, 255, 255, 0.94));
 }
 
+.upload-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.upload-hint {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.file-input,
 .text-input,
 .select-input {
     width: 100%;
@@ -95,16 +111,23 @@ body {
     font: inherit;
 }
 
+.file-input,
+.select-input {
+    padding: 14px 16px;
+}
+
+.section-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
 .text-input {
     min-height: 220px;
     resize: vertical;
     padding: 16px;
     line-height: 1.6;
-}
-
-.select-input {
-    padding: 14px 16px;
-    cursor: pointer;
 }
 
 .controls-grid {
@@ -114,32 +137,74 @@ body {
     margin-top: 18px;
 }
 
-.action-row {
+.action-row,
+.summary-toolbar {
     display: flex;
-    justify-content: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.action-row {
     margin-top: 22px;
 }
 
-.primary-button {
+.primary-button,
+.secondary-button {
     border: none;
     border-radius: 999px;
-    padding: 14px 24px;
     font: inherit;
     font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.primary-button {
+    padding: 14px 24px;
     color: var(--button-text);
     background: var(--button-bg);
     box-shadow: 0 12px 30px rgba(135, 165, 224, 0.25);
-    cursor: pointer;
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.primary-button:hover {
+.secondary-button {
+    padding: 12px 18px;
+    color: var(--text-primary);
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-lavender) 100%);
+}
+
+.primary-button:hover,
+.secondary-button:hover {
     transform: translateY(-1px);
-    box-shadow: 0 16px 34px rgba(135, 165, 224, 0.3);
 }
 
-.primary-button:active {
-    transform: translateY(0);
+.primary-button:disabled,
+.secondary-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.loader-box {
+    margin-top: 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: linear-gradient(135deg, rgba(255, 228, 243, 0.92), rgba(239, 228, 255, 0.96));
+    animation: pulseGlow 1.8s ease-in-out infinite;
+}
+
+.loader-emoji {
+    font-size: 2rem;
+    animation: bobble 1.3s ease-in-out infinite;
+}
+
+.loader-copy strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.loader-copy p {
+    margin: 0;
+    color: var(--text-secondary);
 }
 
 .status-message {
@@ -171,8 +236,28 @@ body {
 .output-text {
     margin: 0;
     white-space: pre-wrap;
-    line-height: 1.7;
+    line-height: 1.75;
     color: var(--text-secondary);
+}
+
+.summary-toolbar {
+    margin-top: -4px;
+}
+
+.compression-card,
+.mini-compression {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.compression-card {
+    background: linear-gradient(180deg, rgba(223, 246, 231, 0.85), rgba(255, 255, 255, 0.94));
+    font-weight: 600;
+}
+
+.mini-compression {
+    margin-top: 14px;
+    font-size: 0.92rem;
 }
 
 .meta-chip,
@@ -211,8 +296,33 @@ body {
     background: linear-gradient(180deg, rgba(222, 245, 229, 0.7), rgba(255, 255, 255, 0.94));
 }
 
+.highlight {
+    background: var(--accent-yellow);
+    border-radius: 10px;
+    padding: 2px 6px;
+    box-shadow: 0 0 0 4px var(--highlight-glow);
+}
+
 .hidden {
     display: none;
+}
+
+@keyframes bobble {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 0 0 rgba(255, 204, 227, 0.25);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(255, 204, 227, 0.1);
+    }
 }
 
 @media (max-width: 760px) {
@@ -225,16 +335,23 @@ body {
         grid-template-columns: 1fr;
     }
 
+    .upload-header,
     .output-heading-row {
         flex-direction: column;
         align-items: flex-start;
     }
 
-    .action-row {
+    .action-row,
+    .summary-toolbar {
         justify-content: stretch;
     }
 
-    .primary-button {
+    .primary-button,
+    .secondary-button {
         width: 100%;
+    }
+
+    .loader-box {
+        align-items: flex-start;
     }
 }

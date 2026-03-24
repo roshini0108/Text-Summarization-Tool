@@ -5,12 +5,19 @@ Summarization logic for transformer-based and NLTK-based summaries.
 from collections import Counter
 import time
 
-from nltk.tokenize import sent_tokenize
-from transformers import pipeline
+try:
+    from transformers import pipeline
+    _TRANSFORMERS_IMPORT_ERROR = None
+except ImportError as error:
+    pipeline = None
+    _TRANSFORMERS_IMPORT_ERROR = error
 
 from utils.text_preprocessing import (
     clean_text,
+    DEPENDENCY_ERROR_MESSAGE,
+    ensure_dependencies,
     ensure_nltk_resources,
+    get_sentence_tokens,
     get_word_tokens,
     remove_stopwords_and_punctuation,
 )
@@ -46,6 +53,9 @@ def get_transformer_pipeline():
     """
     global _TRANSFORMER_PIPELINE
 
+    if _TRANSFORMERS_IMPORT_ERROR is not None or pipeline is None:
+        raise ImportError(DEPENDENCY_ERROR_MESSAGE) from _TRANSFORMERS_IMPORT_ERROR
+
     if _TRANSFORMER_PIPELINE is None:
         _TRANSFORMER_PIPELINE = pipeline(
             "summarization",
@@ -77,10 +87,11 @@ def summarize_with_nltk(text, summary_length):
     """
     Generate an extractive summary using word-frequency scoring.
     """
+    ensure_dependencies()
     ensure_nltk_resources()
 
     cleaned_text = clean_text(text)
-    sentences = sent_tokenize(cleaned_text)
+    sentences = get_sentence_tokens(cleaned_text)
 
     if not sentences:
         return "No summary could be generated from the provided text."

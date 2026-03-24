@@ -5,18 +5,32 @@ Utility helpers for text cleaning and tokenization.
 import re
 import string
 
-import nltk
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
+DEPENDENCY_ERROR_MESSAGE = (
+    "Please install dependencies using: pip install -r requirements.txt"
+)
+
+try:
+    import nltk
+    from nltk.corpus import stopwords
+    from nltk.tokenize import sent_tokenize, word_tokenize
+    _NLTK_IMPORT_ERROR = None
+except ImportError as error:
+    nltk = None
+    stopwords = None
+    sent_tokenize = None
+    word_tokenize = None
+    _NLTK_IMPORT_ERROR = error
 
 
-def ensure_nltk_resources():
+def ensure_dependencies():
     """
-    Download required NLTK resources if they are not already available.
+    Ensure NLTK and required tokenizer resources are available.
     """
+    if _NLTK_IMPORT_ERROR is not None or nltk is None:
+        raise ImportError(DEPENDENCY_ERROR_MESSAGE) from _NLTK_IMPORT_ERROR
+
     resources = {
         "tokenizers/punkt": "punkt",
-        "tokenizers/punkt_tab": "punkt_tab",
         "corpora/stopwords": "stopwords",
     }
 
@@ -27,7 +41,11 @@ def ensure_nltk_resources():
             nltk.download(resource_name, quiet=True)
 
 
-import re
+def ensure_nltk_resources():
+    """
+    Download required NLTK resources if they are not already available.
+    """
+    ensure_dependencies()
 
 def clean_text(text):
     if not text:
@@ -50,15 +68,23 @@ def get_word_tokens(text):
     """
     Convert text into lowercase word tokens.
     """
-    ensure_nltk_resources()
+    ensure_dependencies()
     return [token.lower() for token in word_tokenize(text)]
+
+
+def get_sentence_tokens(text):
+    """
+    Convert text into sentence tokens.
+    """
+    ensure_dependencies()
+    return sent_tokenize(text)
 
 
 def remove_stopwords_and_punctuation(tokens):
     """
     Remove stopwords and punctuation from a list of tokens.
     """
-    ensure_nltk_resources()
+    ensure_dependencies()
     stop_words = set(stopwords.words("english"))
 
     filtered_tokens = []

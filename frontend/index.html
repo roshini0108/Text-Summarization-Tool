@@ -11,12 +11,20 @@
         <section class="app-card">
             <header class="hero">
                 <p class="eyebrow">Text Summarization Tool</p>
-                <h1>Summarize long text with a clean visual workflow</h1>
+                <h1>Summarize long text with a charming little workspace</h1>
                 <p class="subtitle">
-                    Choose a method, adjust the summary length, and preview mock results
-                    that match the backend response structure.
+                    Upload a file or paste your text, choose a model, and get a polished summary
+                    with timing, highlighting, and quick actions.
                 </p>
             </header>
+
+            <section class="panel upload-panel">
+                <div class="upload-header">
+                    <label class="section-label" for="fileInput">Upload File</label>
+                    <span class="upload-hint">Accepted: .txt, .pdf, .docx</span>
+                </div>
+                <input type="file" id="fileInput" class="file-input" accept=".txt,.pdf,.docx">
+            </section>
 
             <section class="panel">
                 <label class="section-label" for="inputText">Input Text</label>
@@ -53,6 +61,14 @@
                 </button>
             </div>
 
+            <section id="loaderBox" class="loader-box hidden" aria-live="polite">
+                <div class="loader-emoji">🧸💭</div>
+                <div class="loader-copy">
+                    <strong>Generating your summary</strong>
+                    <p id="loaderText">🐻✨ Generating your summary...</p>
+                </div>
+            </section>
+
             <section id="statusMessage" class="status-message" aria-live="polite"></section>
 
             <section id="outputSection" class="output-section hidden">
@@ -64,12 +80,19 @@
                     <p id="originalOutput" class="output-text"></p>
                 </div>
 
+                <div class="summary-toolbar hidden" id="summaryToolbar">
+                    <button id="copySummaryButton" class="secondary-button" type="button">📋 Copy Summary</button>
+                    <button id="downloadSummaryButton" class="secondary-button" type="button">⬇️ Download Summary</button>
+                </div>
+
+                <div id="compressionInfo" class="compression-card hidden"></div>
+
                 <div id="singleSummaryBlock" class="output-block hidden">
                     <div class="output-heading-row">
                         <h2 id="singleSummaryTitle">Summary</h2>
                         <span id="singleTiming" class="time-pill"></span>
                     </div>
-                    <p id="singleSummaryText" class="output-text"></p>
+                    <div id="singleSummaryText" class="output-text"></div>
                 </div>
 
                 <div id="compareGrid" class="compare-grid hidden">
@@ -78,7 +101,8 @@
                             <h2>Transformer Summary</h2>
                             <span id="transformerTiming" class="time-pill"></span>
                         </div>
-                        <p id="transformerOutput" class="output-text"></p>
+                        <div id="transformerOutput" class="output-text"></div>
+                        <div id="transformerCompression" class="mini-compression"></div>
                     </article>
 
                     <article class="output-block nltk-block">
@@ -86,7 +110,8 @@
                             <h2>NLTK Summary</h2>
                             <span id="nltkTiming" class="time-pill"></span>
                         </div>
-                        <p id="nltkOutput" class="output-text"></p>
+                        <div id="nltkOutput" class="output-text"></div>
+                        <div id="nltkCompression" class="mini-compression"></div>
                     </article>
                 </div>
             </section>
