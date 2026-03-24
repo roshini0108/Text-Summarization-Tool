@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Summarization Tool</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="page">
+        <section class="app-card">
+            <header class="hero">
+                <p class="eyebrow">Text Summarization Tool</p>
+                <h1>Summarize long text with a clean visual workflow</h1>
+                <p class="subtitle">
+                    Choose a method, adjust the summary length, and preview mock results
+                    that match the backend response structure.
+                </p>
+            </header>
+
+            <section class="panel">
+                <label class="section-label" for="inputText">Input Text</label>
+                <textarea
+                    id="inputText"
+                    class="text-input"
+                    placeholder="Paste your text here..."
+                ></textarea>
+            </section>
+
+            <section class="controls-grid">
+                <div class="panel">
+                    <label class="section-label" for="method">Summarization Method</label>
+                    <select id="method" class="select-input">
+                        <option value="transformer">Transformer</option>
+                        <option value="nltk">NLTK</option>
+                        <option value="compare">Compare Both</option>
+                    </select>
+                </div>
+
+                <div class="panel">
+                    <label class="section-label" for="summaryLength">Summary Length</label>
+                    <select id="summaryLength" class="select-input">
+                        <option value="short">Short</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="long">Long</option>
+                    </select>
+                </div>
+            </section>
+
+            <div class="action-row">
+                <button id="generateButton" class="primary-button" type="button">
+                    Generate Summary
+                </button>
+            </div>
+
+            <section id="statusMessage" class="status-message" aria-live="polite"></section>
+
+            <section id="outputSection" class="output-section hidden">
+                <div class="output-block original-block">
+                    <div class="output-heading-row">
+                        <h2>Original Text</h2>
+                        <span id="selectedMeta" class="meta-chip"></span>
+                    </div>
+                    <p id="originalOutput" class="output-text"></p>
+                </div>
+
+                <div id="singleSummaryBlock" class="output-block hidden">
+                    <div class="output-heading-row">
+                        <h2 id="singleSummaryTitle">Summary</h2>
+                        <span id="singleTiming" class="time-pill"></span>
+                    </div>
+                    <p id="singleSummaryText" class="output-text"></p>
+                </div>
+
+                <div id="compareGrid" class="compare-grid hidden">
+                    <article class="output-block transformer-block">
+                        <div class="output-heading-row">
+                            <h2>Transformer Summary</h2>
+                            <span id="transformerTiming" class="time-pill"></span>
+                        </div>
+                        <p id="transformerOutput" class="output-text"></p>
+                    </article>
+
+                    <article class="output-block nltk-block">
+                        <div class="output-heading-row">
+                            <h2>NLTK Summary</h2>
+                            <span id="nltkTiming" class="time-pill"></span>
+                        </div>
+                        <p id="nltkOutput" class="output-text"></p>
+                    </article>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
