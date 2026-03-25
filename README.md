@@ -63,7 +63,7 @@ Text Summarization Tool/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/text-summarization-app.git
+git clone https://github.com/roshini0108/text-summarization-app.git
 cd text-summarization-app
 ```
 
