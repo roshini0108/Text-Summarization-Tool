@@ -144,12 +144,6 @@ frontend/index.html
 
 ---
 
-## 📸 Demo
-
-> Add screenshots here (UI + output)
-
----
-
 ## 🎯 Future Improvements
 
 * GPU acceleration for faster inference
